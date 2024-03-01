@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+ <h2 class="mb-3">Mettre à jour le grade</h2>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Save changes</button>
+    <a href="{% url 'users:profiles' %}" class="btn btn-outline-secondary">Nevermind</a>
+  </form>
+
+{% endblock content %}

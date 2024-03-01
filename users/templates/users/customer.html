@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-8 col-sm-10 col-12">
+      <h2>Sign up as a {{ user_type }}</h2>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Sign up</button>
+      </form>
+
+      <p class="lead">
+        If you already have an account, go ahead and <a href="{% url 'users:login' %}">log in</a>. If you are new to Django Schools, get started
+        by creating a <a href="{% url 'customer_register' %}">User account</a> or a <a href="{% url 'author_register' %}">author account</a>.
+      </p>
+      <div class="auth__alternative">
+        <p>Have you a Projects Author ?</p>
+        <a href="{% url 'author_register' %}">Sign Up</a>
+    </div>
+    </div>
+  </div>
+
+
+{% endblock content %}

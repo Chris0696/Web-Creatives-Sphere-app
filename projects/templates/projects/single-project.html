@@ -1,0 +1,104 @@
+{% extends 'main.html' %}
+{% load i18n %}
+
+{% block content %}
+
+<!-- Main Section -->
+<main class="singleProject my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <h3 class="singleProject__subtitle">{% trans 'Tools & Stacks' %}</h3>
+          <div class="singleProject__toolStack">
+            {% for tag in project.tags.all %}
+            <span class="tag tag--pill tag--sub tag--lg">
+              <small>{{tag}}</small>
+            </span>
+            {% endfor %}
+          </div>
+          {% if project.source_link %}
+          <a class="singleProject__liveLink" href="{{project.source_link}}" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M9.636 13.5a.5.5 0 0 1-.5.5H2.5A1.5 1.5 0 0 1 1 12.5v-10A1.5 1.5 0 0 1 2.5 1h10A1.5 1.5 0 0 1 14 2.5v6.636a.5.5 0 0 1-1 0V2.5a.5.5 0 0 0-.5-.5h-10a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h6.636a.5.5 0 0 1 .5.5"/>
+              <path fill-rule="evenodd" d="M5 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H6.707l8.147 8.146a.5.5 0 0 1-.708.708L6 6.707V10.5a.5.5 0 0 1-1 0z"/>
+            </svg>
+            {% trans 'Source Code' %}
+          </a>
+          {% endif %}
+
+          {% if project.source_link %}
+          <a class="singleProject__liveLink" href="{{project.source_link}}" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M9.636 13.5a.5.5 0 0 1-.5.5H2.5A1.5 1.5 0 0 1 1 12.5v-10A1.5 1.5 0 0 1 2.5 1h10A1.5 1.5 0 0 1 14 2.5v6.636a.5.5 0 0 1-1 0V2.5a.5.5 0 0 0-.5-.5h-10a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h6.636a.5.5 0 0 1 .5.5"/>
+              <path fill-rule="evenodd" d="M5 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H6.707l8.147 8.146a.5.5 0 0 1-.708.708L6 6.707V10.5a.5.5 0 0 1-1 0z"/>
+            </svg>
+            {% trans 'Demo link' %}
+          </a>
+          {% endif %}
+        </div>
+
+        <div class="column column--2of3">
+          <img class="singleProject__preview" src="{{ project.project_image.url }}" alt="portfolio thumbnail" />
+          <a href="{% url 'users:author-profile' project.owner.id  %}" class="singleProject__developer">{{project.owner.name}}</a>
+          <h2 class="singleProject__title">{{project.title}}</h2>
+          <h3 class="singleProject__subtitle">{% trans 'About the Project' %}</h3>
+          <div class="singleProject__info">
+            {{project.description}}
+          </div>
+
+          <div class="comments">
+            <h3 class="singleProject__subtitle">{% trans 'Feedback' %}</h3>
+            <h5 class="project--rating">
+              {{project.vote_ratio}}% {% trans 'Postitive Feedback' %} ({{project.vote_total}} {% trans 'Vote' %}{{project.vote_total|pluralize:"s"}})
+            </h5>
+
+            {% if request.user.customerprofile.id in project.reviewers %}
+            <p>You have already submitted your review for this project</p>
+
+            {% elif request.user.profile == project.owner %}
+              <p>You cannot review your own work</p>
+
+            {% elif request.user.is_authenticated %}
+            <form class="form list" action="{% url 'projects:project' project.id %}" method="POST">
+              {% csrf_token %}
+              {% for field in form %}
+              <div class="form__field">
+                <label for="formInput#textarea">{{field.label}}</label>
+                {{field}}
+              </div>
+              {% endfor %}
+              <input class="btn btn--sub btn--lg" type="submit" value="{% trans 'Comments' %}" />
+            </form>
+            {% else %}
+              <a href="{% url 'users:login' %}?next={{request.path}}">Please login to leave a review</a>
+
+            {% endif %}
+
+
+
+            <div class="commentList list">
+              {% for review in project.review_set.all %}
+              {% if review.body %}
+              <div class="comment">
+                <a href="{% url 'users:customer-profile' review.owner.id %}">
+                  <img class="avatar avatar--pd" src="{{review.owner.profile_image.url}}" alt="user" />
+                </a>
+
+                <div class="comment__details">
+                  <a href="{% url 'users:customer-profile' review.owner.id %}" class="comment__author">{{review.owner.name}}</a>
+                  <p class="comment__info">{{ review.body|linebreaksbr|slice:"250" }}</p>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</main>
+
+
+
+{% endblock content %}

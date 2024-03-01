@@ -1,0 +1,37 @@
+.avatar {
+  border-radius: 50%;
+  border: 2px solid var(--color-main);
+  object-fit: cover;
+}
+
+.avatar--xl {
+  height: 20rem;
+  width: 20rem;
+}
+
+.avatar--lg {
+  height: 15rem;
+  width: 15rem;
+}
+
+.avatar--md {
+  height: 8rem;
+  width: 7rem;
+}
+
+.avatar--pd {
+  max-height: 8em;
+  max-width: 12em;
+}
+
+@media (max-width: 430px){
+  .avatar--pd {
+    max-height: 15em;
+    max-width: 15em;
+}
+}
+
+.avatar--sm {
+  height: 5rem;
+  width: 5rem;
+}

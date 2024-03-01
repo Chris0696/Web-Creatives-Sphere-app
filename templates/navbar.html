@@ -1,0 +1,101 @@
+{% load static %}
+{% load i18n %}
+<!-- Header Section -->
+<header class="header">
+    <div class="container container--narrow">
+      <a href="{% url 'wcss:index' %}" class="header__logo">
+        <img src="{% static 'images/logo.svg' %}" alt="DevSearch Logo" />
+      </a>
+      <nav class="header__nav">
+        <input type="checkbox" id="responsive-menu" />
+        <label for="responsive-menu" class="toggle-menu">
+          <span>Menu</span>
+          <div class="toggle-menu__lines"></div>
+        </label>
+        <ul class="header__menu">
+          <li class="header__menuItem"><a href="{% url 'wcss:index' %}">{% trans 'accueil' %}</a></li>
+          <li class="header__menuItem"><a href="{% url 'projects:projects' %}">{% trans 'Projects' %}</a></li>
+          <li class="header__menuItem"><a href="{% url 'users:profiles' %}">{% trans 'Authors' %}</a></li>
+
+
+
+
+
+		{% if request.user.is_authenticated %}
+
+
+			<li class="header__menuItem dropdown">
+
+
+				<a href="#" class="btn dropdown-toggle btn btn--sub" data-toggle="dropdown">
+					My account
+				</a>
+
+				<ul class="dropdown-menu">
+					{% if user.is_authenticated and user.is_author %}
+							<li><div class="dropdown-divider"></div></li>
+
+							<li>
+								<a class="dropdown-item text-center" href="#"><h6>inbox</h6></a>
+
+							<li><div class="dropdown-divider"></div></li>
+
+							<li>
+								<a class="dropdown-item text-center" href="{% url 'author-account' %}"><h6>{{ user.username }}</h6></a>
+
+							<li><div class="dropdown-divider"></div></li>
+
+							<li>
+								<a class="dropdown-item text-center" href="{% url 'projects:create-project' %}"><h6>{% trans 'Add project' %}</h6></a>
+							</li>
+
+					{% elif user.is_authenticated and user.is_superuser %}
+
+							<li>
+								<a class="dropdown-item text-center" href="#"><h6>inbox</h6></a>
+
+							<li><div class="dropdown-divider"></div></li>
+
+							<li>
+								<a class="dropdown-item text-center" href="{% url 'author-account' %}"><h6>{{ user.username }}</h6></a>
+
+							<li><div class="dropdown-divider"></div></li>
+
+							<li>
+								<a class="dropdown-item text-center" href="{% url 'users:customerprofiles' %}"><h6>{% trans 'Customers' %}</h6></a>
+							</li>
+
+
+					{% else %}
+							<li>
+								<a class="dropdown-item text-center" href="#"><h6>inbox</h6></a>
+
+							<li><div class="dropdown-divider"></div></li>
+
+							<li>
+								<a class="dropdown-item text-center" href="{% url 'customer-account' %}"><h6>{{ user.username }}</h6></a>
+							</li>
+					{% endif %}
+
+
+							<li><div class="dropdown-divider"></div></li>
+
+							<li>
+								<a class="dropdown-item active text-center" href="{% url 'users:logout' %}"><strong><h5>{% trans 'Logout' %}</h5></strong></a>
+							</li>
+
+				</ul>
+
+
+			</li>
+
+			{% else %}
+
+				<li class="header__menuItem"><a href="{% url 'users:login' %}" class="btn btn--sub">{% trans 'Se connecter' %}</a></li>
+
+			{% endif %}
+
+        </ul>
+      </nav>
+    </div>
+</header>

@@ -1,0 +1,60 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <a class="backButton" href="{% url 'users:author-profile' recipient.id %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                </svg>
+            </a>
+            <br>
+
+            <form class="form" method="POST">
+                {% csrf_token %}
+
+                {% if request.user.is_authenticated %}
+
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{form.name.label}} </label>
+                    {{form.name}}
+                </div>
+
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{form.email.label}} </label>
+                    {{form.email}}
+                </div>
+
+                {% endif %}
+
+
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{form.subject.label}} </label>
+                    {{form.subject}}
+                </div>
+
+
+
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{form.body.label}} </label>
+                    {{form.body}}
+                </div>
+
+                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+</main>
+<br><br><br><br><br><br><br><br><br>
+{% endblock content %}
